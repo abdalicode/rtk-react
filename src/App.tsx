@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import {selectPosts, increment} from './app/posts/postsSlice'
+import {useAppSelector, useAppDispatch} from './app/hooks'
 
 function App() {
+  const posts =useAppSelector(selectPosts) ;
+  const dispatch : any = useAppDispatch();
+  
+  useEffect(() => {
+    dispatch(increment())
+  }, [])
+  
+  console.log(posts)
   return (
     <div className="App">
       <header className="App-header">
@@ -19,6 +29,7 @@ function App() {
           Learn React
         </a>
       </header>
+
     </div>
   );
 }
