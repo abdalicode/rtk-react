@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
 interface Post {
@@ -11,6 +11,14 @@ interface PostsSlice {
   posts: Post[];
   count: number;
 }
+
+export const getPosts = createAsyncThunk("posts/getPosts", async (thunkApi) => {
+  const res = await fetch("https://jsonplaceholder.typicode.com/posts").then(
+    (data) => data.json()
+  );
+  return res as Post;
+});
+
 const initialState: PostsSlice = {
   posts: [{ title: "Apple", content: "green", commentCount: 10, id: 1 }],
   count: 1,
@@ -32,6 +40,16 @@ export const postsSlice = createSlice({
     removePost: (state, action: PayloadAction<number>) => {
       state.posts = state.posts.filter((post) => post.id !== action.payload);
     },
+  },
+  extraReducers(builder) {
+    builder
+      .addCase(getPosts.fulfilled, (state, action) => {
+        console.log(action);
+        console.log(state);
+      })
+      .addCase(getPosts.pending, (state, action) => {
+        console.log("Loading...");
+      });
   },
 });
 

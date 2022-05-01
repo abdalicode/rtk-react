@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import {selectPosts, increment} from './app/posts/postsSlice'
+import {selectPosts, increment, getPosts} from './app/posts/postsSlice'
 import {useAppSelector, useAppDispatch} from './app/hooks'
 
 function App() {
@@ -10,9 +10,9 @@ function App() {
   
   useEffect(() => {
     dispatch(increment())
+    dispatch(getPosts())
   }, [])
   
-  console.log(posts)
   return (
     <div className="App">
       <header className="App-header">
